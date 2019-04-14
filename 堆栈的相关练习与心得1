@@ -1,0 +1,270 @@
+提要：
+
+①
+这个程序可以换成一个更好的结构，可以把1 2 3 三种不同操作封装在三个函数中，也可以采用实例化的类的对象区实现一个
+ 栈，让三个函数成为栈的成员函数。这种做法应该是比较提倡的。
+ 当然，使用如下的方法也可以实现。不过下次尽量封装起来。
+②
+ 这个程序第一要审题，选择合适的数据结构是做出这道题目的关键之一。
+ 另外，培养自己一个习惯：
+ 输入的值一定注意！
+ 尽量不要存在变量中，
+ 就算存在变量里面，
+ 后面也尽量不要更改它的值。
+ 如果需要一个变量进行迭代、索引，可以把输入的值同时也存在这个专用来变化的变量中。
+
+格式化输入还需要多训练自己，灵活运用字符串截取，注意吃回车的问题。要排除掉输入一个空值的情况
+
+  如果题目要求一连串的逻辑，
+  尤其是多处穿插使用while,for,if循环分支等语句的时候，
+ 先把逻辑理清楚，
+ 可以用伪语言（顺口就行）先写出来，等逻辑理清楚再用等义的合法语言替换上去。
+
+    完全可以先写出来你要一个什么样的结果，
+    再去填补求结果的过程，免得自己写着写着忘记自己这段代码要干嘛。 
+
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+/*
+ 这个程序可以换成一个更好的结构，可以把1 2 3 三种不同操作封装在三个函数中，也可以采用实例化的类的对象区实现一个
+ 栈，让三个函数成为栈的成员函数。这种做法应该是比较提倡的。
+ 当然，使用如下的方法也可以实现。不过下次尽量封装起来。
+     
+ */
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int N;
+            Stack task =new Stack();
+
+            Console.WriteLine("input N the amount of queries:");
+            N = Convert.ToInt16(Convert.ToString( Console.ReadLine()));
+            Console.WriteLine("now please give the queries to server:");
+            Console.WriteLine("====================================================================");
+            Console.WriteLine("             input                |        output                ");
+            Console.WriteLine("====================================================================");
+            while (N>0) {
+                string temp = "000";
+                    temp = Convert.ToString(Console.ReadLine())+" ";
+
+                char typeinput = temp[0];
+                int type = Convert.ToInt16(typeinput)-48;
+      
+
+                if (type == 1) {
+                    //选择1向堆栈中加入元素
+                    int content = Convert.ToInt16(temp.Substring(1));
+                    task.Push(content);
+
+                } else if (type == 2) {
+                    //选择2弹出一个元素
+                   task.Pop();
+
+
+
+                } else if (type == 3) {
+                    //选择3输出当前堆栈中最大的元素。需要排序吗?怎么排序呢？
+                    int nums = task.Count;
+                    int k = 0;
+                    int l = 0;
+                    Array taskarr = task.ToArray();
+                    int max = 0;
+                    for (k = nums-1; k >= 0; k--) {
+                        max = Math.Max(Convert.ToInt16(taskarr.GetValue(k).ToString()), max);                  
+                    }
+                    Console.WriteLine("  you get the max:                              "+max);
+                } else {
+
+                    Console.WriteLine("you should input a number in(1,2,3).please input query order again:\n");
+                    N++;
+                }
+                N--;
+            }
+
+
+
+            Console.ReadLine();
+
+        }
+    }
+}
+
+
+
+
+
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+/*
+ 这个程序第一要审题，选择合适的数据结构是做出这道题目的关键之一。
+ 另外，培养自己一个习惯：
+ 输入的值一定注意！
+ 尽量不要存在变量中，
+ 就算存在变量里面，
+ 后面也尽量不要更改它的值。
+ 如果需要一个变量进行迭代、索引，可以把输入的值同时也存在这个专用来变化的变量中。
+
+格式化输入还需要多训练自己，灵活运用字符串截取，注意吃回车的问题。要排除掉输入一个空值的情况
+
+  如果题目要求一连串的逻辑，
+  尤其是多处穿插使用while,for,if循环分支等语句的时候，
+ 先把逻辑理清楚，
+ 可以用伪语言（顺口就行）先写出来，等逻辑理清楚再用等义的合法语言替换上去。
+
+    完全可以先写出来你要一个什么样的结果，
+    再去填补求结果的过程，免得自己写着写着忘记自己这段代码要干嘛。 
+*/
+namespace ConsoleApp1
+{
+    class pump {
+        public int order;
+        public int giver;
+        public int needer;
+        public bool flag;
+
+       public pump(int orderr,int giverr,int neederr,bool flagg) {//写个构造函数
+            this.order = orderr;
+            this.giver = giverr;
+            this.needer = neederr;
+            this.flag = flagg;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int N;
+            int countN;
+            Array pumpsInfo = new Array[30000010];
+            int a = 0;
+            int b = 0;
+            Queue tour = new Queue();
+            int order0 = 0;
+            //这个题目用队列做比较好，为什么？因为这里有一个环的概念
+
+            Console.WriteLine("input N the amount of petrol pumps:\n");
+            N = Convert.ToInt16(Convert.ToString(Console.ReadLine()));
+            countN = N;
+
+            Console.WriteLine("to start the journey,write down  the plan :");
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("-----------------------------------------------------------------------------------------");
+            Console.WriteLine(" input                                      ");
+            Console.WriteLine(" [give need]                                          ");
+            Console.WriteLine("-----------------------------------------------------------------------------------------");
+            Console.WriteLine("");
+            Console.WriteLine("");
+
+            while (N > 0)
+            {               
+                string line = "000";
+                line = Convert.ToString(Console.ReadLine()) + " ";
+                string give="";
+                int givee=0;
+                string need = "";
+                int needd = 0;
+                int i = 0;
+
+                if (line[0] == '\0') {
+                    Console.Write("error! no input!\a\n");
+
+                    continue;
+                } else
+                {
+                    while (line[i] != ' ')
+                    {
+                        give = line.Substring(0,i+1).ToString();
+                        i++;
+                    }
+
+                    need = line.Substring(i).ToString();
+                }
+                givee = Convert.ToInt16(give);
+                needd = Convert.ToInt16(need);
+
+                //先不考虑别的情况，把每个输入都入队
+                pump theP = new pump(order0,givee,needd,false);              
+                tour.Enqueue(theP);//在队列里面存下标信息的序号
+                order0++;
+                N--;
+            }
+            //测试一下队列里面的东西
+            Console.WriteLine("\n----------------------------------------------------------------------------------------");
+            Console.WriteLine(" result                                     ");
+            Console.WriteLine("-----------------------------------------------------------------------------------------\n");
+            //把加油站都入队以后，再来找一找从哪个加油站开始可以绕一圈
+            int zero = 0;
+            int start = -1;
+            int restPetrol=0;
+            pump now = (pump)tour.Peek();
+            start = now.order;
+            for (zero=0;zero< countN; zero++){
+                restPetrol = 0;
+                int theF = now.giver;
+                int countPumps=0;
+                if (now.giver >= now.needer)
+                {
+                    Console.WriteLine("  start ");
+                    while (countPumps <= countN-1 )
+                    {
+                        pump tmp = (pump)tour.Peek();
+                        if (restPetrol + tmp.giver >= tmp.needer || (tmp.order==now.order&&theF>=tmp.needer))
+                        {
+                            restPetrol = restPetrol + tmp.giver - tmp.needer;
+                            Console.Write(" ==> " + tmp.order);
+                            Console.Write("          get "+tmp.giver+"  L ,and spend "+tmp.needer+ " L"+ "......");
+                             Console.Write(" the rest of P is:  "+restPetrol+"\n");
+                            tour.Dequeue();
+                            tour.Enqueue(tmp);
+                        }
+                        else
+                        {
+                            if (countPumps < countN - 1)
+                            {
+                                Console.WriteLine("\n\n it can not finish a tour.\a");
+                                Console.Read();
+                                return;
+                            }
+                            break;
+
+
+                        }
+                        countPumps++;
+
+                        if (countPumps == countN)
+                        {     
+                            Console.WriteLine("\n\n finish the circle and the start is:          " + start);
+                            Console.Read();
+                            return;
+                        }
+                    }           
+                }
+                else {
+                    tour.Dequeue();
+                    tour.Enqueue(now);
+                    now = (pump)tour.Peek();
+
+                }
+                start++;
+            }
+            Console.WriteLine("\n          it can not finish a tour.\a");       
+            Console.ReadLine();
+
+        }
+    }
+}
