@@ -1,0 +1,111 @@
+上次的堆栈其实我还是个半桶水。。
+不过正则表达式的知识点也有一些，现在来总结一下：
+
+
+请眼熟：
+
+
+===========================================正则表达式起步基础================================================
+
+
+符号charactor classes 
+\w \W \s \S \d \n \t  [0-9]   [^abc]  [abc]
+
+量词 quantifiers
+*   +   ?
+
+锚 anchor（身心感受感受这个微妙的存在）
+^   $
+
+分组构造 group constructs 
+//这个蛮有意思的，分组构造若以集合形式返回，类同一个数组结果。那么result[0]是整个分组构造的结果，result[1]和往后都是分组构造的分值
+
+\d{2} - (\w{3}) - \d{4}         \d{2} - ( ?<month> \w{3} ) - \d{4}
+
+
+反向引用构造 backreferrance constructs
+//这个也很有意思，反向引用构造本身也对前面的一个整体的分组构造有所限制，这个我表达不够清楚，我自己在练习中慢慢体会吧
+//举个例子 ‘seek’  (\w)\1  结果是什么呢？是'ee' 这里意思是需要两个相同的\w的意思哦。然而\w\w和这个意思又有微妙的区别
+
+
+\number   \k<name>
+
+
+
+
+=========================================怎么使用正则表达式？=================================================
+
+regex类的用法
+
+·创建 new Regex()：
+
+string pattern = @"A\w+";
+Regex regex = new Regex(pattern);
+
+
+·字符串是否匹配正则表达式  IsMatch()：
+
+string text = "Today is 2015-05-11";
+string pattern = @"\d{4}-\d{2}-\d{2}";
+
+Regex regex = new Regex(pattern);
+bool containsValidDate = regex.IsMatch(text);
+Console.WriteLine(containsValidDate); // True
+
+·字符串匹配的结果，包括匹配处数，还有匹配的子串 Match()  Group.Count  Groups[i]：
+
+string text = "Nakov: 123";
+string pattern = @"([A-Z][a-z]+): (\d+)";
+Regex regex = new Regex(pattern);
+Match match = regex.Match(text);
+Console.WriteLine(match.Groups.Count); // 3
+Console.WriteLine("Matched text: \"{0}\"", match.Groups[0]);
+Console.WriteLine("Name: {0}", match.Groups[1]); // Nakov
+Console.WriteLine("Number: {0}", match.Groups[2]); // 123
+
+
+·字符串匹配的结果，包括匹配处数，还有匹配的分组构造，分组构造还可以拆， 毁天灭地，直接返回一个collection集合给你 Matches():
+
+
+//注意下collection的用法哦，返回给你一整个matches集合，但是matches里面是一个个数组match，代表每一个分组构造
+match.groups[0] 是整体,match.group[1]及往后是分值，使用时可以用foreach遍历集合matches
+
+string text = "Nakov: 123, Branson: 456";
+string pattern = @"([A-Z][a-z]+): (\d+)";
+Regex regex = new Regex(pattern);
+
+MatchCollection matches = regex.Matches(text, pattern);
+Console.WriteLine("Found {0} matches", matches.Count);
+
+foreach (Match match in matches)
+{
+Console.WriteLine("Name: {0}", match.Groups[1]);
+}
+// Found 2 matches
+// Name: Nakov
+// Name: Branson
+
+
+
+·字符串替换 Replace():
+
+string text = "Nakov: 123, Branson: 456";
+string pattern = @"\d{3}";
+string replacement = "999";
+Regex regex = new Regex(pattern);
+string result = regex.Replace(text, replacement);
+Console.WriteLine(result);
+// Nakov: 999, Branson: 999
+
+
+·字符串正则过滤 Split():
+
+string text = "1 2 3 4";
+string pattern = @"\s+";
+string[] results = Regex.Split(text, pattern);//注意他返回的是一个字符串数组哦！
+Console.WriteLine(string.Join(", ", results)); // 1, 2, 3, 4
+
+
+==============================================================================================
+
+*在字符串中如果要输出一个固定的+要在+前面加上\
