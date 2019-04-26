@@ -1,0 +1,46 @@
+
+LINQ是什么呢？LINQ全称是（language integrated query），这是个在.NET平台下的一个查询工具。
+非常好用。但是为什么好用呢？我的理解是，他可以提高查找的效率，减少在查找的过程当中各种操作对时间的消耗。
+
+
+LINQ to Objects：为任意类型的 C#内存对象提供查询，例如数组、列表和其他集合类型。
+
+LINQ to SQL：为使用标准 SQL 数据库查询语言的关系数据库提供查询，例如，Micorsoft
+SQL Server、Oracle 和其他数据库。
+
+LINQ to XML：提供了 XML 文档的创建和处理功能
+
+LINQ Providers：除了对象、SQL 数据库和 XML 之外，还可以为其他数据源扩展 LINQ。
+
+
+Where()
+First() / FirstOrDefault()
+Last() / LastOrDefault()
+Select()
+OrderBy() / ThenBy() / OrderByDescending()
+Any()
+All()
+Distinct()
+Skip() / Take()
+
+=========================↑ Usage ↑=====↓ Example ↓========================
+
+Using Select() to read an array in a single line:
+int[] arr = Console.ReadLine().Split().Select(int.Parse).ToArray()
+
+Using Distinct() to get the unique elements from that array:
+int[] uniqueArr = arr.Distinct().ToArray()
+
+Using Where() to filter only the even numbers from the array:
+int[] evenNums = uniqueArr.Where(num => num % 2 == 0).ToArray()
+
+Using OrderBy() to order them in ascending order:
+int[] orderedArr = evenNums.OrderBy(num => num).ToArray()
+
+
+============================================================================
+
+使用注意：linq查询，查到的结果是一个集合哦，所以要用集合遍历的方式去读取，就是foreach in ，告诉自己不要忘记啦
+
+
+
